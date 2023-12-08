@@ -1,0 +1,63 @@
+/*======================================*/
+/*リセット*/
+* {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html,
+body,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+p,
+div {
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  list-style: none;
+}
+
+img {
+  display: block;
+  vertical-align: bottom;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:link,
+a:visited,
+a:hover,
+a:active,
+a:focus {
+  color: #222222;
+  outline: none;
+  box-shadow: none;
+}
+
+button {
+  margin: 0;
+  padding: 0;
+  border: 0px;
+  background-color: #ffffff;
+}
+
+input:focus,
+select:focus,
+button:focus {
+  outline: 0;
+}
+
+input,
+select {
+  -webkit-appearance: none;
+  appearance: none;
+}
+/*======================================*/

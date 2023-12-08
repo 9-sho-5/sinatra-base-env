@@ -1,0 +1,10 @@
+default_env: &default
+  adapter: postgresql
+  encoding: unicode
+  database: itunes-api-web-app
+
+development:
+  <<: *default
+
+production:
+  <<: *default
