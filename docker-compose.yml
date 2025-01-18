@@ -1,0 +1,37 @@
+services:
+  app:
+    container_name: app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "4567:4567"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://postgres:password@db:5432/app_development
+    command: >
+      bash -c "until pg_isready -h db -p 5432; do
+                 echo 'Waiting for database...';
+                 sleep 2;
+               done;
+               rake db:create &&
+               rake db:migrate &&
+               ruby app.rb"
+
+  db:
+    container_name: db
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: app_development
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:

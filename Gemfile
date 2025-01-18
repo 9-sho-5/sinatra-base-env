@@ -10,6 +10,7 @@ gem 'sinatra', '~> 2.1'
 gem 'sinatra-activerecord', '~> 2.0'
 gem 'sinatra-contrib', '~> 2.1'
 gem 'webrick', '~> 1.7'
+gem 'concurrent-ruby', '1.3.4'
 
 group :development do
   gem 'pry'
