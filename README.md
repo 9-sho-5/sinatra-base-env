@@ -5,7 +5,7 @@
 ### Dockr の起動
 
 ```
-docker-compose u -d
+docker-compose up -d
 ```
 
 ### Docker の停止
