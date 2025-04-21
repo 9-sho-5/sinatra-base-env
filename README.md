@@ -18,3 +18,9 @@ docker-compose exec app ここにコマンドを書く！
 ```
 docker-compose down --volumes --rmi all --remove-orphans
 ```
+
+### コマンドの実行
+
+```
+docker-compose exec app 〇〇
+```
