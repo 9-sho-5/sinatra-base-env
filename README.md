@@ -8,6 +8,11 @@
 docker-compose up -d
 ```
 
+### コマンドの実行
+```
+docker-compose exec app ここにコマンドを書く！
+```
+
 ### Docker の停止
 
 ```
