@@ -1,23 +1,19 @@
-# Use official Ruby image
-FROM ruby:3.0.0
+FROM ruby:3.3.0
 
-# Set the working directory
+RUN apt-get update -qq && \
+  apt-get install -y build-essential libpq-dev libssl-dev postgresql-client && \
+  rm -rf /var/lib/apt/lists/*
+
+RUN gem install bundler:2.5.22
+
 WORKDIR /app
 
-# Copy Gemfile and Gemfile.lock
 COPY Gemfile Gemfile.lock /app/
+RUN bundle _2.5.22_ install
 
-# Install dependencies
-RUN bundle install
-
-# Copy the rest of the application files
 COPY . /app
 
-# Install PostgreSQL client for database operations
-RUN apt-get update -qq && apt-get install -y postgresql-client
-
-# Expose the Sinatra port
 EXPOSE 4567
 
-# Run the application
-CMD ["ruby", "app.rb"]
+# CMD は docker-compose 側の command を使うため不要または以下のように rackup に統一
+CMD ["bundle", "exec", "rackup", "-p", "4567", "-o", "0.0.0.0", "config/config.ru"]
