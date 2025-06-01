@@ -1,10 +1,19 @@
-default_env: &default
+default: &default
   adapter: postgresql
   encoding: unicode
-  database: sinatra-base-env
+  pool: 5
+  username: postgres
+  password: password
+  host: db
 
 development:
   <<: *default
+  database: app_development
+
+test:
+  <<: *default
+  database: app_test
 
 production:
   <<: *default
+  database: app_production

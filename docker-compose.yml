@@ -1,0 +1,45 @@
+services:
+  # アプリケーションコンテナ（Sinatra + ActiveRecord）
+  app:
+    container_name: app
+    build:
+      context: .               # Dockerfile のあるビルドコンテキスト
+      dockerfile: Dockerfile  # 使用する Dockerfile のパス
+    ports:
+      - "4567:4567"            # ホスト:コンテナ のポートバインド（Sinatra 用）
+    volumes:
+      - .:/app                 # ソースコードをコンテナにマウント（ライブ編集用）
+    depends_on:
+      - db                    # db サービス起動を待つ
+    environment:
+      DATABASE_URL: postgres://postgres:password@db:5432/app_development  # ActiveRecord 用 DB URL
+    command: >
+      bash -c "
+        # DB が起動するまで待機
+        until pg_isready -h db -p 5432; do
+          echo 'Waiting for database...';
+          sleep 2;
+        done;
+        # DB 作成とマイグレーションを実行
+        rake db:create &&
+        rake db:migrate &&
+        # Sinatra アプリを rackup 経由で起動（ポート4567, 外部公開）
+        bundle exec rackup -p 4567 -o 0.0.0.0 config/config.ru
+      "
+
+  # PostgreSQL コンテナ
+  db:
+    container_name: db
+    image: postgres:latest     # 使用する公式 PostgreSQL イメージ
+    environment:
+      POSTGRES_USER: postgres         # DB ユーザー名
+      POSTGRES_PASSWORD: password     # DB パスワード
+      POSTGRES_DB: app_development    # 初期作成するデータベース名
+    ports:
+      - "5432:5432"            # ホスト:コンテナ のポートバインド
+    volumes:
+      - db_data:/var/lib/postgresql/data  # DB データの永続化
+
+# 永続ボリューム定義（PostgreSQL のデータ保存用）
+volumes:
+  db_data:
